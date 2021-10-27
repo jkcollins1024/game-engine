@@ -1,0 +1,8 @@
+﻿  App.cpp
+  Box.cpp
+  Capsule.cpp
+  GameplayScreen.cpp
+  NinjaPlatformer.cpp
+  Player.cpp
+  Generating Code...
+LINK : fatal error LNK1104: cannot open file 'glad.lib'

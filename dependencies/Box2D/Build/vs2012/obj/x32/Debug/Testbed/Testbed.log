@@ -1,0 +1,8 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  TestEntries.cpp
+  Test.cpp
+  Render.cpp
+  Main.cpp
+C:\Code\Zombies\dependencies\Box2D\glui\glui.h(914,24): warning C4834: discarding return value of function with 'nodiscard' attribute
+  Generating Code...
+LINK : fatal error LNK1104: cannot open file 'bin\Debug\Box2D.lib'

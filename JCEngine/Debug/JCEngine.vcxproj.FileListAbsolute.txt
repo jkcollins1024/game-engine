@@ -1,0 +1,2 @@
+C:\Code\GraphicsTutorial\Debug\JCEngine.pdb
+C:\Code\GraphicsTutorial\JCEngine\Debug\JCEngine.pdb
