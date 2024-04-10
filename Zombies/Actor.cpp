@@ -130,8 +130,19 @@ Player::Player(glm::vec2 position, JCEngine::Camera2D* camera) {
 	_type = ActorType::PLAYER;
 	_uv = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f); //uv should just be standard for now
 	_currentGunIndex = -1;
+	_isShooting = false;
 
 	_texture = JCEngine::ResourceManager::getTexture("Textures/player.png");
+
+	JCEngine::GLTexture handgunWalkTexture = JCEngine::ResourceManager::getTexture("Textures/SoldierHandgunWalkAnimation.png");
+	JCEngine::GLTexture shotgunWalkTexture = JCEngine::ResourceManager::getTexture("Textures/SoldierShotgunWalkAnimation.png");
+	JCEngine::GLTexture handgunShootTexture = JCEngine::ResourceManager::getTexture("Textures/SoldierHandgunShootAnimation.png");
+	JCEngine::GLTexture shotgunShootTexture = JCEngine::ResourceManager::getTexture("Textures/SoldierShotgunShootAnimation.png");
+
+	m_handgunWalkTileSheet.init(handgunWalkTexture, glm::ivec2(20, 1));
+	m_shotgunWalkTileSheet.init(shotgunWalkTexture, glm::ivec2(20, 1));
+	m_handgunShootTileSheet.init(handgunShootTexture, glm::ivec2(3, 1));
+	m_shotgunShootTileSheet.init(shotgunShootTexture, glm::ivec2(3, 1));
 
 	_camera = camera;
 
@@ -153,6 +164,77 @@ Player::Player(glm::vec2 position, JCEngine::Camera2D* camera) {
 
 Player::~Player() {
 
+}
+
+void Player::draw(JCEngine::SpriteBatch& spriteBatch) {
+	float animationSpeed = 0.2f;
+	glm::vec4 uvRect;
+	int tileIndex, numTiles;
+	glm::vec4 positionRect(_position.x, _position.y, _size.x, _size.y);
+	GLuint textureID;
+
+	m_animTime += animationSpeed;
+	
+
+	//get animation frame
+	if (getCurrentGunIndex() == 0) {
+		if (_isShooting) {
+			numTiles = 3;
+
+			tileIndex = (int)m_animTime % numTiles;
+
+			if (m_animTime > numTiles) {
+				_isShooting = false;
+				m_animTime = 0.0f;
+			}
+
+			textureID = m_handgunShootTileSheet.texture.id;
+			uvRect = m_handgunShootTileSheet.getUV(tileIndex);
+		}
+		else {
+			numTiles = 20;
+
+			tileIndex = (int)m_animTime % numTiles;
+
+			if (m_animTime > numTiles) {
+				_isShooting = false;
+				m_animTime = 0.0f;
+			}
+
+			textureID = m_handgunWalkTileSheet.texture.id;
+			uvRect = m_handgunWalkTileSheet.getUV(tileIndex);
+		}
+	}
+	else {
+		if (_isShooting) {
+			numTiles = 3;
+
+			tileIndex = (int)m_animTime % numTiles;
+
+			if (m_animTime > numTiles) {
+				_isShooting = false;
+				m_animTime = 0.0f;
+			}
+
+			textureID = m_shotgunShootTileSheet.texture.id;
+			uvRect = m_shotgunShootTileSheet.getUV(tileIndex);
+		}
+		else {
+			numTiles = 20;
+
+			tileIndex = (int)m_animTime % numTiles;
+
+			if (m_animTime > numTiles) {
+				_isShooting = false;
+				m_animTime = 0.0f;
+			}
+
+			textureID = m_shotgunWalkTileSheet.texture.id;
+			uvRect = m_shotgunWalkTileSheet.getUV(tileIndex);
+		}
+	}
+
+	spriteBatch.draw(positionRect, uvRect, textureID, 0.0f, _color, _directionFacing);
 }
 
 void Player::move(const std::vector<std::string>& levelData, std::vector<Actor*>& actors, Player* player, float deltaTime) {
@@ -182,18 +264,22 @@ void Player::updateGun(JCEngine::InputManager* inputManager, std::vector<Bullet*
 	glm::vec2 mouseCoords = inputManager->getMouseCoords();
 	mouseCoords = _camera->ConvertScreenToWorld(mouseCoords);
 
-	glm::vec2 playerPosition = getPosition() + glm::vec2(16.0f);
-	glm::vec2 bulletDirection = mouseCoords - playerPosition;
+	glm::vec2 gunPosition = getPosition() + glm::vec2(32.0f) + glm::rotate(_directionFacing, -0.4f) * 32.2f;
+
+	glm::vec2 playerPosition = getPosition() + glm::vec2(48.0f);//+ glm::rotate(glm::vec2(48.0f), _directionFacing);
+	glm::vec2 bulletDirection = mouseCoords - gunPosition;
 	bulletDirection = glm::normalize(bulletDirection);
 
-	_guns[_currentGunIndex]->update(inputManager->isKeyDown(SDL_BUTTON_LEFT), bulletDirection, playerPosition, bullets, deltaTime);
+	_isShooting = inputManager->isKeyDown(SDL_BUTTON_LEFT);
+
+	_guns[_currentGunIndex]->update(_isShooting, bulletDirection, gunPosition, bullets, deltaTime);
 }
 
 void Player::setDirectionFacing(JCEngine::InputManager* inputManager) {
 	glm::vec2 mouseCoords = inputManager->getMouseCoords();
 	mouseCoords = _camera->ConvertScreenToWorld(mouseCoords);
 
-	glm::vec2 playerPosition = getPosition() + glm::vec2(16.0f);
+	glm::vec2 playerPosition = getPosition() + glm::vec2(32.0f);
 	_directionFacing = glm::normalize(mouseCoords - playerPosition);
 }
 
@@ -204,6 +290,10 @@ Zombie::Zombie(glm::vec2 position, glm::vec2 size) {
 	_uv = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f); //uv should just be standard for now
 
 	_texture = JCEngine::ResourceManager::getTexture("Textures/zombie.png");
+
+	JCEngine::GLTexture walkTexture = JCEngine::ResourceManager::getTexture("Textures/ZombieWalkAnimation.png");
+
+	m_walkTileSheet.init(walkTexture, glm::ivec2(4, 1));
 
 	static std::mt19937 randomEngine;
 	randomEngine.seed(time(nullptr));
@@ -228,6 +318,30 @@ Zombie::Zombie(glm::vec2 position, glm::vec2 size) {
 
 Zombie::~Zombie() {
 	
+}
+
+void Zombie::draw(JCEngine::SpriteBatch& spriteBatch) {
+	float animationSpeed = 0.2f;
+	glm::vec4 uvRect;
+	int tileIndex, numTiles = 4;
+	glm::vec4 positionRect(_position.x, _position.y, _size.x, _size.y);
+	GLuint textureID;
+
+	m_animTime += animationSpeed;
+
+	//get animation frame
+	numTiles = 4;
+
+	tileIndex = (int)m_animTime % numTiles;
+
+	if (m_animTime > numTiles) {
+		m_animTime = 0.0f;
+	}
+
+	textureID = m_walkTileSheet.texture.id;
+	uvRect = m_walkTileSheet.getUV(tileIndex);
+
+	spriteBatch.draw(positionRect, uvRect, textureID, 0.0f, _color, _directionFacing);
 }
 
 void Zombie::move(const std::vector<std::string>& levelData, std::vector<Actor*>& actors, Player* player, float deltaTime) {
@@ -277,6 +391,10 @@ Human::Human(glm::vec2 position, glm::vec2 size) {
 
 	_texture = JCEngine::ResourceManager::getTexture("Textures/human.png");
 
+	JCEngine::GLTexture walkTexture = JCEngine::ResourceManager::getTexture("Textures/HumanWalkAnimation.png");
+
+	m_walkTileSheet.init(walkTexture, glm::ivec2(12, 1));
+
 	static std::mt19937 randomEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randomDirection(-1.0f, 1.0f);
 
@@ -300,6 +418,29 @@ Human::Human(glm::vec2 position, glm::vec2 size) {
 
 Human::~Human() {
 
+}
+
+void Human::draw(JCEngine::SpriteBatch& spriteBatch) {
+	float animationSpeed = 0.2f;
+	glm::vec4 uvRect;
+	int tileIndex, numTiles = 4;
+	glm::vec4 positionRect(_position.x, _position.y, _size.x, _size.y);
+	GLuint textureID;
+
+	m_animTime += animationSpeed;
+
+	//get animation frame
+	numTiles = 12;
+	tileIndex = (int)m_animTime % numTiles;
+
+	if (m_animTime > numTiles) {
+		m_animTime = 0.0f;
+	}
+
+	textureID = m_walkTileSheet.texture.id;
+	uvRect = m_walkTileSheet.getUV(tileIndex);
+
+	spriteBatch.draw(positionRect, uvRect, textureID, 0.0f, _color, glm::rotate(_directionFacing, -0.5f * (float)M_PI));
 }
 
 void Human::move(const std::vector<std::string>& levelData, std::vector<Actor*>& actors, Player* player, float deltaTime) {

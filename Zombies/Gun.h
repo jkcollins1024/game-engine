@@ -14,6 +14,7 @@ public:
 	~Gun();
 
 	void update(bool isMouseDown, const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet*>& bullets, float deltaTime);
+	bool canFire(float deltaTime);
 
 private:
 	std::string _name;

@@ -88,7 +88,7 @@ void MainGame::initSystems() {
 
 void MainGame::initLevel() {
 	//get level 1
-	_levels.push_back(new Level("Levels/level1.txt"));
+	_levels.push_back(new Level("Levels/level2.txt"));
 
 	//load music
 	JCEngine::Music music = _audioEngine.loadMusic("Sound/XYZ.ogg");
@@ -102,11 +102,12 @@ void MainGame::initLevel() {
 	float levelWidth = (float)_levels[_currentLevel]->getWidth() * 64.0f;
 	float levelHeight = (float)_levels[_currentLevel]->getHeight() * 64.0f;
 	glm::vec2 startPlayerPosition = _levels[_currentLevel]->getStartPlayerPosition();
-	_player = Player(glm::vec2(levelWidth / 2.0f, levelHeight / 2.0f), &_camera);
+	/*_player = Player(glm::vec2(levelWidth / 2.0f, levelHeight / 2.0f), &_camera);*/
+	_player = Player(glm::vec2(32.0f, 32.0f), &_camera);
 
 	_camera.SetPosition(_player.getPosition());
 
-	//create a humans with random positions
+	//create humans with random positions
 	std::mt19937 randomEngine(time(nullptr));
 	std::uniform_int_distribution<int> randomx(5, _levels[_currentLevel]->getWidth() - 5);
 	std::uniform_int_distribution<int> randomy(5, _levels[_currentLevel]->getHeight() - 5);
@@ -125,7 +126,7 @@ void MainGame::initLevel() {
 	}
 
 	//set up guns
-	_player.addGun(new Gun("Magnum", 30, 1, 0.1f, 20.0f, 30, _audioEngine.loadSoundEffect("Sound/shots/pistol.wav")));
+	_player.addGun(new Gun("Magnum", 30, 1, 0.0f, 20.0f, 30, _audioEngine.loadSoundEffect("Sound/shots/pistol.wav")));
 	_player.addGun(new Gun("Shotgun", 60, 12, 0.5f, 20.0f, 4, _audioEngine.loadSoundEffect("Sound/shots/shotgun.wav")));
 	_player.addGun(new Gun("MP5", 5, 1, 0.2f, 20.0f, 20, _audioEngine.loadSoundEffect("Sound/shots/cg1.wav")));
 	

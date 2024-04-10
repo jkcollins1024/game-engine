@@ -6,6 +6,7 @@
 #include <JCEngine/InputManager.h>
 #include <Zombies\Gun.h>
 #include <JCEngine\Camera2D.h>
+#include <JCEngine/TileSheet.h>
 
 enum class ActorType { ZOMBIE, HUMAN, PLAYER };
 
@@ -21,7 +22,7 @@ public:
 	Actor();
 	~Actor();
 
-	void draw(JCEngine::SpriteBatch& spriteBatch);
+	virtual void draw(JCEngine::SpriteBatch& spriteBatch);
 
 	//depends on actors around it - will need some processing in main game
 	virtual void move(const std::vector<std::string>& levelData, std::vector<Actor*>& actors, Player* player, float deltaTime) {};
@@ -44,11 +45,13 @@ public:
 
 protected:
 	float _speed = 20;
+	float m_animTime = 0.0f;
 	glm::vec2 _position;
 	glm::vec2 _size;
 	glm::vec4 _uv;
 	JCEngine::ColorRGBA8 _color;
 	JCEngine::GLTexture _texture;
+	JCEngine::TileSheet m_walkTileSheet;
 	ActorType _type;
 	glm::vec2 _direction;
 	glm::vec2 _directionFacing;
@@ -64,6 +67,7 @@ public:
 	Player(glm::vec2 position, JCEngine::Camera2D* camera);
 	~Player();
 
+	virtual void draw(JCEngine::SpriteBatch& spriteBatch) override;
 	virtual void move(const std::vector<std::string>& levelData, std::vector<Actor*>& actors, Player* player, float deltaTime) override;
 
 	void addGun(Gun* gun);
@@ -78,9 +82,13 @@ public:
 private:
 	std::vector<Gun*> _guns;
 	int _currentGunIndex;
+	bool _isShooting;
 
 	JCEngine::Camera2D* _camera;
-	
+	JCEngine::TileSheet m_handgunWalkTileSheet;
+	JCEngine::TileSheet m_shotgunWalkTileSheet;
+	JCEngine::TileSheet m_handgunShootTileSheet;
+	JCEngine::TileSheet m_shotgunShootTileSheet;
 };
 
 class Zombie : public Actor {
@@ -90,6 +98,7 @@ public:
 
 	Actor* getNearestHuman(std::vector<Actor*>& actors, Player* player);
 
+	virtual void draw(JCEngine::SpriteBatch& spriteBatch) override;
 	virtual void move(const std::vector<std::string>& levelData, std::vector<Actor*>& actors, Player* player, float deltaTime) override;
 };
 
@@ -98,6 +107,7 @@ public:
 	Human(glm::vec2 position, glm::vec2 size);
 	~Human();
 	
-	virtual void move(const std::vector<std::string>& levelData, std::vector<Actor*>& actors, Player* player, float deltaTime) override;
+	virtual void draw(JCEngine::SpriteBatch& spriteBatch) override;
+	virtual void move(const std::vector<std::string>& levelData, std::vector<Actor*>& actors, Player* player, float deltaTime) override;	
 };
 

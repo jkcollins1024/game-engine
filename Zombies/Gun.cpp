@@ -26,7 +26,7 @@ void Gun::update(bool isMouseDown, const glm::vec2& direction, const glm::vec2& 
 		fire(direction, position, bullets);
 		_frameCount = 0;
 	}
-	
+
 }
 
 void Gun::fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet*>& bullets) {
