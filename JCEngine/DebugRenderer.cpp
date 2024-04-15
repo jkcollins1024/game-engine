@@ -130,6 +130,41 @@ namespace JCEngine {
 		m_indices.push_back(i);
 	}
 
+	void DebugRenderer::drawTriangle(const glm::vec2 position, const glm::vec2 vertex1, const glm::vec2 vertex2, const glm::vec2 vertex3, const ColorRGBA8& color, float angle)
+	{
+		int i = m_vertices.size();
+		m_vertices.resize(m_vertices.size() + 3);
+
+		//glm::vec2 halfDimensions(dimensions.x / 2.0f, dimensions.y / 2.0f);
+
+		//get centered position points
+		/*glm::vec2 topLeft(-halfDimensions.x, halfDimensions.y);
+		glm::vec2 botLeft(-halfDimensions.x, -halfDimensions.y);
+		glm::vec2 topRight(halfDimensions.x, halfDimensions.y);
+		glm::vec2 botRight(halfDimensions.x, -halfDimensions.y);*/
+
+		//glm::vec2 positionOffset(destRect.x, destRect.y);
+
+		m_vertices[i].position = rotate(vertex1, angle) + position;// +halfDimensions + positionOffset;
+		m_vertices[i + 1].position = rotate(vertex2, angle) + position;// +halfDimensions + positionOffset;
+		m_vertices[i + 2].position = rotate(vertex3, angle) + position;// +halfDimensions + positionOffset;
+		//m_vertices[i + 3].position = rotate(topRight, angle);// +halfDimensions + positionOffset;
+
+		for (int j = i; j < i + 3; j++) {
+			m_vertices[j].color = color;
+		}
+
+		m_indices.reserve(m_indices.size() + 6);
+
+		//push indices to make line segments
+		m_indices.push_back(i);
+		m_indices.push_back(i + 1);
+		m_indices.push_back(i + 1);
+		m_indices.push_back(i + 2);
+		m_indices.push_back(i + 2);
+		m_indices.push_back(i);
+	}
+
 
 	void DebugRenderer::drawCircle(const glm::vec2 center, const ColorRGBA8& color, float radius)
 	{

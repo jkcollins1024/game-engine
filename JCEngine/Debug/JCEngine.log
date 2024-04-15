@@ -1,43 +1,4 @@
-﻿  AudioEngine.cpp
-  Camera2D.cpp
-  DebugRenderer.cpp
-  GameErrors.cpp
-  GLSLProgram.cpp
-C:\Code\Zombies\JCEngine\GLSLProgram.cpp(57,28): warning C4244: 'argument': conversion from 'double' to 'GLsizei', possible loss of data
-  ImageLoader.cpp
-  InputManager.cpp
-  IOManager.cpp
-C:\Code\Zombies\JCEngine\IOManager.cpp(18,16): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
-C:\Code\Zombies\JCEngine\IOManager.cpp(24,27): warning C4244: '-=': conversion from 'std::streamoff' to 'int', possible loss of data
-C:\Code\Zombies\JCEngine\IOManager.cpp(45,16): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
-C:\Code\Zombies\JCEngine\IOManager.cpp(51,27): warning C4244: '-=': conversion from 'std::streamoff' to 'int', possible loss of data
-  JCEngine.cpp
-  IMainGame.cpp
-  ParticleBatch2D.cpp
-  ParticleEngine2D.cpp
-  picoPNG.cpp
-  ResourceManager.cpp
-  ScreenList.cpp
-  Sprite.cpp
-C:\Code\Zombies\JCEngine\Sprite.cpp(44,8): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Code\Zombies\JCEngine\Sprite.cpp(45,8): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Code\Zombies\JCEngine\Sprite.cpp(46,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Code\Zombies\JCEngine\Sprite.cpp(47,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  SpriteBatch.cpp
-C:\Code\Zombies\JCEngine\SpriteBatch.cpp(93,21): warning C4018: '<': signed/unsigned mismatch
-C:\Code\Zombies\JCEngine\SpriteBatch.cpp(122,21): warning C4018: '<': signed/unsigned mismatch
-C:\Code\Zombies\JCEngine\SpriteBatch.cpp(148,29): warning C4018: '<': signed/unsigned mismatch
-  SpriteFont.cpp
-  TextureCache.cpp
-  Timing.cpp
-C:\Code\Zombies\JCEngine\Timing.cpp(25,20): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
-C:\Code\Zombies\JCEngine\Timing.cpp(28,29): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
-C:\Code\Zombies\JCEngine\Timing.cpp(43,26): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
-C:\Code\Zombies\JCEngine\Timing.cpp(46,27): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
-  Generating Code...
-  Compiling...
-  Window.cpp
-  Generating Code...
+﻿  DebugRenderer.cpp
 opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
   JCEngine.vcxproj -> C:\Code\Zombies\Debug\JCEngine.lib

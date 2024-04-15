@@ -14,6 +14,7 @@ namespace JCEngine {
 		void init();
 		void end();
 		void drawBox(const glm::vec4 destRect, const ColorRGBA8& color, float angle);
+		void drawTriangle(const glm::vec2 dimensions, const glm::vec2 vertex1, const glm::vec2 vertex2, const glm::vec2 vertex3, const ColorRGBA8& color, float angle);
 		void drawCircle(const glm::vec2 center, const ColorRGBA8& color, float radius);
 		void render(const glm::mat4& projectionMatrix, float lineWidth);
 		void dispose();
