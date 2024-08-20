@@ -1,8 +1,6 @@
 #ignore all build objects
 Debug
 Release
-*.vcxproj
-*.vcxproj.*
 
 #Visual Studio specifics
 .vs
